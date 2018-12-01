@@ -12,11 +12,10 @@ pub fn increment_stored_count() {
 
 
 pub fn get_stored_count() -> u32 {
-    //NOTE: Lot of duplication 
-    let mut file = File::open("count.txt")
-        .expect("file not found."); 
+    let mut file = open_file(); 
 
     let mut count_in_file = String::new(); 
+
     file.read_to_string(&mut count_in_file)
         .expect("something wrong when reading file."); 
 
@@ -28,9 +27,13 @@ pub fn get_stored_count() -> u32 {
 
 
 fn set_stored_count(count : u32) {
-    let _file = File::open("count.txt") 
-        .expect("file not found"); 
+    let _file = open_file(); 
 
     let count_as_string = count.to_string(); 
     fs::write("count.txt", count_as_string).expect("something wrong"); 
+}
+
+fn open_file() -> File {
+    File::open("count.txt")
+        .expect("file not found.")
 }

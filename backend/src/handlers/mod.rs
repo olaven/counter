@@ -8,21 +8,23 @@ pub fn increment_handler(_request : &mut Request) -> Result<Response, IronError>
     increment_stored_count();  
 
     let mut response = Response::new();
-    response.headers.set(AccessControlAllowOrigin::Any); 
-    response.status = Some(status::Ok); 
-    
+    allow_all_origin(&mut response); 
+
     Ok(response)
 }
 
 pub fn retrieve_handler(_request : &mut Request) -> Result<Response, IronError> {
-    let counter = get_stored_count(); 
-    let counter_string : String = counter.to_string(); 
+    let stored_count = get_stored_count(); 
+    let count_as_string : String = stored_count.to_string(); 
 
     let mut response = Response::new(); 
-    response.headers.set(AccessControlAllowOrigin::Any); 
-    response.status = Some(status::Ok);  
+    allow_all_origin(&mut response);  
 
-    response.body = Some(Box::new(counter_string)); 
-    
+    response.body = Some(Box::new(count_as_string)); 
     Ok(response)
+}
+
+fn allow_all_origin(response : &mut Response) {
+    response.headers.set(AccessControlAllowOrigin::Any); 
+    response.status = Some(status::Ok); 
 }

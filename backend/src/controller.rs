@@ -11,7 +11,6 @@ pub fn start() {
     router.get("/retrieve", retrieve_handler, "retrieve"); 
 
     let chain = Chain::new(router); 
-
     Iron::new(chain).http("localhost:8080").unwrap(); 
 }
 
